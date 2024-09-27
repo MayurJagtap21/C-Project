@@ -23,6 +23,7 @@ int searchPlayer(Player*);   // Search Player
 void displayPlr(Player*);   // Display player after found in database (in search function)
 void searchupdatedata(Player*);  // Update player Data
 void removeplayer(Player*);   // Remove Player
+void displaysort(Player*);   // Leading Run Scorer OR Wicket Taker
 void topthree(Player*);  // Leading Three Run Scorer OR Wicket Taker
 
 void main()
@@ -39,10 +40,8 @@ void choice(Player* plyarr)
 	while(1)
 	{
 		int choice;
-		printf("******************************************************************************************************************\n");
-		printf("\nEnter choice (1 - 7) \n1.Store Player \n2.Display Player \n3.Search Player \n4.Update Data \n5.Remove Player \n6.Top Three \n7.Exit: \n");
+		printf("\nEnter choice (1 - 8) \n1.Store Player \n2.Display Player \n3.Search Player \n4.Update Data \n5.Remove Player \n6.Display Sort \n7.Top Three \n8.Exit: \n");
 		scanf("%d",&choice);
-		printf("******************************************************************************************************************\n");
 		switch (choice)
 		{
 			case 1:
@@ -60,23 +59,17 @@ void choice(Player* plyarr)
 					int i = searchPlayer(plyarr);   
 					if(i == 0)
 						{
-							printf("******************************************************************************************************************\n");
 							printf("Player found at %d index\n",i);
 							displayPlr(&plyarr[i]);
-							printf("******************************************************************************************************************\n");
 						}
 					else if(i)
 						{
-							printf("******************************************************************************************************************\n");
 							printf("Player found at %d index\n",i);
 							displayPlr(&plyarr[i]);
-							printf("******************************************************************************************************************\n");
 						}
 					else
 						{
-							printf("******************************************************************************************************************\n");
 							printf("Player not found\n");
-							printf("******************************************************************************************************************\n");
 						}
 						break;
 				}
@@ -92,10 +85,15 @@ void choice(Player* plyarr)
 				}
 			case 6:
 				{
+					displaysort(plyarr);
+					break;			
+				}
+			case 7:
+				{
 					topthree(plyarr);
 					break;			
 				}	
-			case 7:
+			case 8:
 				{
 					printf("Good Bye!!!....\n");
 					return;
@@ -147,18 +145,17 @@ void AddPlayer(Player*plyarr)
 
 
 void displayPlayer(Player*p1)
-{	
+{
+	printf("------------------------------------------------------------------------\n");
+	printf("| %-15s| %-20s| %-6s| %-8s| %-12s|\n","Jersy Number","Name","Runs","Wicket","Match Played");
+	
+	printf("------------------------------------------------------------------------\n");
 	for(int i = 0; i < count; i++)
 	{
-		printf("******************************************************************************************************************\n");
-		printf("Jersy Number: %d\t",p1[i].JersyNumber);
-		printf("Name: %s\t",p1[i].name);
-		printf("Runs: %d\t",p1[i].runs);
-		printf("Wickets: %d\t",p1[i].wicket);
-		printf("Match Played: %d\n",p1[i].MatchPlayed);
-		printf("******************************************************************************************************************\n");
+		printf("| %-15d| %-20s| %-6d| %-8d| %-12d|\n",p1[i].JersyNumber,p1[i].name,p1[i].runs,p1[i].wicket,p1[i].MatchPlayed);
 	}
-}
+	printf("------------------------------------------------------------------------\n");
+}	
 
 int searchPlayer(Player* plyarr)
 {
@@ -203,13 +200,14 @@ int searchPlayer(Player* plyarr)
 
 void displayPlr(Player*p1)
 {
-		printf("******************************************************************************************************************\n");
-		printf("Jersy Number: %d\t",p1->JersyNumber);
-		printf("Name: %s\t",p1->name);
-		printf("Runs: %d\t",p1->runs);
-		printf("Wickets: %d\t",p1->wicket);
-		printf("Match Played: %d\n",p1->MatchPlayed);
-		printf("******************************************************************************************************************\n");
+	printf("------------------------------------------------------------------------\n");
+	printf("| %-15s| %-20s| %-6s| %-8s| %-12s|\n","Jersy Number","Name","Runs","Wicket","Match Played");
+	
+	printf("------------------------------------------------------------------------\n");
+
+	printf("| %-15d| %-20s| %-6d| %-8d| %-12d|\n",p1->JersyNumber,p1->name,p1->runs,p1->wicket,p1->MatchPlayed);
+
+	printf("------------------------------------------------------------------------\n");
 }
 
 void searchupdatedata(Player* p1)
@@ -256,8 +254,69 @@ void removeplayer(Player*p1)
 	}
 }
 
+void displaysort(Player* p1)
+{
+	Player arr[capacity];
+	for(int i = 0; i <= capacity; i++)
+		{
+			arr[i] = p1[i];
+		}
+	
+	int choice;
+	printf("By which attribute you want to sort: \n");
+	printf("By Runs Press 1 OR By Wickets Press 2: \n");
+	scanf("%d",&choice);
+	switch(choice)
+	{
+		case 1:
+			{
+				printf("Sorting Using run:\n");
+				Player temp;
+				for(int i = 0; i < count-1; i++)
+				{
+					for(int j = 0; j < count-1; j++)
+					{
+						if(arr[j].runs > arr[j + 1].runs)
+						{
+							temp = arr[j];
+							arr[j] = arr[j + 1];
+							arr[j + 1] = temp;
+						}
+					}
+				}
+				displayPlayer(arr);
+				break;
+			}
+		case 2:
+			{
+				printf("Sorting Using Wicket:\n");
+				Player temp;
+				for(int i = 0; i < count-1; i++)
+				{
+					for(int j = 0; j < count-1; j++)
+					{
+						if(arr[j].wicket > arr[j + 1].wicket)
+						{
+							temp = arr[j];
+							arr[j] = arr[j + 1];
+							arr[j + 1] = temp;
+						}
+					}
+				}
+				displayPlayer(arr);
+				break;
+			}
+	}
+}	
+
+
 void topthree(Player* p1)
 {
+	Player arr[capacity];
+	for(int i = 0; i <= capacity; i++)
+		{
+			arr[i] = p1[i];
+		}
 	int choice;
 	printf("By which attribute you want to find Top Three: \n");
 	printf("By Runs Press 1 OR By Wickets Press 2: \n");
@@ -272,22 +331,23 @@ void topthree(Player* p1)
 				{
 					for(int j = 0; j < count-1; j++)
 					{
-						if(p1[j].runs < p1[j + 1].runs)
+						if(arr[j].runs < arr[j + 1].runs)
 						{
-							temp = p1[j];
-							p1[j] = p1[j + 1];
-							p1[j + 1] = temp;
+							temp = arr[j];
+							arr[j] = arr[j + 1];
+							arr[j + 1] = temp;
 						}
 					}
 				}
+				printf("------------------------------------------------------------------------\n");
+				printf("| %-15s| %-20s| %-6s| %-8s| %-12s|\n","Jersy Number","Name","Runs","Wicket","Match Played");
+	
+				printf("------------------------------------------------------------------------\n");
 				for(int i = 0; i < 3; i++)
 				{
-					printf("Jersy Number: %d\t\t",p1[i].JersyNumber);
-					printf("Name: %s\t",p1[i].name);
-					printf("Runs: %d\t",p1[i].runs);
-					printf("Wickets: %d\t",p1[i].wicket);
-					printf("Match Played: %d\n",p1[i].MatchPlayed);
+					printf("| %-15d| %-20s| %-6d| %-8d| %-12d|\n",arr[i].JersyNumber,arr[i].name,arr[i].runs,arr[i].wicket,arr[i].MatchPlayed);
 				}
+				printf("------------------------------------------------------------------------\n");
 				break;
 			}
 		case 2:
@@ -298,23 +358,24 @@ void topthree(Player* p1)
 				{
 					for(int j = 0; j < count-1; j++)
 					{
-						if(p1[j].wicket < p1[j + 1].wicket)
+						if(arr[j].wicket < arr[j + 1].wicket)
 						{
-							temp = p1[j];
-							p1[j] = p1[j + 1];
-							p1[j + 1] = temp;
+							temp = arr[j];
+							arr[j] = arr[j + 1];
+							arr[j + 1] = temp;
 						}
 					}
 				}
+				printf("------------------------------------------------------------------------\n");
+				printf("| %-15s| %-20s| %-6s| %-8s| %-12s|\n","Jersy Number","Name","Runs","Wicket","Match Played");
+	
+				printf("------------------------------------------------------------------------\n");
 				for(int i = 0; i < 3; i++)
 				{
-					printf("Jersy Number: %d\t\t",p1[i].JersyNumber);
-					printf("Name: %s\t",p1[i].name);
-					printf("Runs: %d\t",p1[i].runs);
-					printf("Wickets: %d\t",p1[i].wicket);
-					printf("Match Played: %d\n",p1[i].MatchPlayed);
+					printf("| %-15d| %-20s| %-6d| %-8d| %-12d|\n",arr[i].JersyNumber,arr[i].name,arr[i].runs,arr[i].wicket,arr[i].MatchPlayed);
 				}
+				printf("------------------------------------------------------------------------\n");
 				break;
 			}
 	}
-}	
+}
